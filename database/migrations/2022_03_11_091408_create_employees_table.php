@@ -16,6 +16,16 @@ class CreateEmployeesTable extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('position_id')->constrained();
+            $table->string('nama_karyawan');
+            $table->string('nip')->unique();
+            $table->string('departemen');
+            $table->date('tgl_lahir');
+            $table->string('thn_lahir');
+            $table->string('alamat');
+            $table->string('no_telp');
+            $table->string('agama');
+            $table->integer('status');
+            $table->string('ktp');
             $table->timestamps();
         });
     }
