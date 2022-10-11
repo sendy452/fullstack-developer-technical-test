@@ -164,9 +164,13 @@
             { data: null,
                 render: function ( data, type, row ) {
                     if (data.status == 1) {
-                        return '<a href="{{url('')}}" type="button" class="btn btn-success">Aktif ';
+                        var url = '{{route("status.employee", ":id")}}';
+                        url = url.replace(':id', data.id);
+                        return '<a href="'+url+'" type="button" class="btn btn-success">Aktif ';
                     } else {
-                        return '<a href="#" type="button" class="btn btn-danger">Tidak Aktif ';
+                        var url = '{{route("status.employee", ":id")}}';
+                        url = url.replace(':id', data.id);
+                        return '<a href="'+url+'" type="button" class="btn btn-danger">Tidak Aktif ';
                     }
                 }
             },

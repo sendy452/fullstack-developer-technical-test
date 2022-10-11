@@ -83,7 +83,7 @@ class EmployeeController extends Controller
             'ktp' => $filename,
         ]);
         
-        toast('Data Employee Berhasil Ditambahkan', 'success');
+        toast('Data employee berhasil ditambahkan', 'success');
         return redirect('/employee');
     }
 
@@ -119,6 +119,29 @@ class EmployeeController extends Controller
     public function update(Request $request, Employee $employee)
     {
         //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Employee  $employee
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStatus(Request $request)
+    {
+        $employee = Employee::find($request->id);
+
+        if ($employee->status == 1) {
+            $employee->status = 0;
+            $employee->save();
+        } else {
+            $employee->status = 1;
+            $employee->save();
+        }
+
+        toast('Status employee berhasil dirubah', 'success');
+        return redirect('/employee');
     }
 
     /**

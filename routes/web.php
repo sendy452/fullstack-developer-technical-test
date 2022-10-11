@@ -25,3 +25,4 @@ Route::resource('position',PositionController::class);
 //Employee
 Route::resource('employee',EmployeeController::class);
 Route::post('add-employee',[EmployeeController::class, 'store']);
+Route::get('status-employee/{id}',[EmployeeController::class, 'updateStatus'])->name('status.employee');
