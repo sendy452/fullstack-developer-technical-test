@@ -181,10 +181,10 @@
                     } else {
                         data.status = "Tidak Aktif";
                     }
-                    return '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Detail</button> ' +
+                    return '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalDetail'+data.id+'">Detail</button> ' +
                     '<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal">Edit</button> ' +
                     '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">Delete</button> ' +
-                    '<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">'+
+                    '<div class="modal fade" id="modalDetail'+data.id+'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">'+
                         '<div class="modal-dialog" role="document">'+
                             '<div class="modal-content">'+
                                 '<div class="modal-header">'+
