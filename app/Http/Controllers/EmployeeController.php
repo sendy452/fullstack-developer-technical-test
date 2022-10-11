@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Position;
 use Illuminate\Http\Request;
+use Validator;
 
 class EmployeeController extends Controller
 {
@@ -14,7 +16,15 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        $positions = Position::all();
+
+        if(request()->ajax()) {
+            $employees = Employee::all();
+            return datatables($employees)
+                ->addIndexColumn()
+                ->toJson();
+        }
+        return view('employee',['positions' => $positions]);
     }
 
     /**
@@ -22,9 +32,47 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $data = $request->all();
+        $validator = Validator::make($data, [
+            'nip' => 'string|unique:employees,nip',
+            'ktp' => 'image|mimes:jpg,png',
+        ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            if($validator->errors()->has('nip')){
+                toast('NIP telah didaftarkan sebelumnya', 'warning');
+                return redirect('/employee');
+            }
+
+            if($validator->errors()->has('ktp')){
+                toast('Format KTP harus jpg atau png', 'warning');
+                return redirect('/employee');
+            }
+        }
+
+        $file= $request->file('ktp');
+        $filename= date('Ymd').$file->getClientOriginalName();
+        $file->move(public_path('public/Image'), $filename);
+
+        Employee::create([
+            'position_id' => $request->jabatan,
+            'nip' => $request->nip,
+            'nama_karyawan' => $request->nama_karyawan,
+            'departemen' => $request->departemen,
+            'tgl_lahir' => $request->tgl_lahir,
+            'thn_lahir' => $request->thn_lahir,
+            'alamat' => $request->alamat,
+            'no_telp' => $request->no_telp,
+            'agama' => $request->agama,
+            'status' => $request->status,
+            'ktp' => $filename,
+        ]);
+        
+        toast('Data Employee Berhasil Ditambahkan', 'success');
+        return redirect('/employee');
     }
 
     /**
