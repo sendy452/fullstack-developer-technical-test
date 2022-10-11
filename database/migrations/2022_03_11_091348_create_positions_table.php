@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Position;
 
 class CreatePositionsTable extends Migration
 {
@@ -18,6 +19,14 @@ class CreatePositionsTable extends Migration
             $table->string('name');
             $table->timestamps();
         });
+
+        Position::create([
+            'name' => 'Fullstack Developer',
+        ]);
+
+        Position::create([
+            'name' => 'Flutter Developer',
+        ]);
     }
 
     /**
