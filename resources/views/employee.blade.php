@@ -138,6 +138,7 @@
                   <th>Nama Karyawan</th>
                   <th>NIP</th>
                   <th>Departemen</th>
+                  <th>Status</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -160,7 +161,58 @@
             { data: 'nama_karyawan' },
             { data: 'nip' },
             { data: 'departemen' },
-           
+            { data: null,
+                render: function ( data, type, row ) {
+                    if (data.status == 1) {
+                        return '<a href="{{url('')}}" type="button" class="btn btn-success">Aktif ';
+                    } else {
+                        return '<a href="#" type="button" class="btn btn-danger">Tidak Aktif ';
+                    }
+                }
+            },
+            { data: null,
+                render: function ( data, type, row ) {
+                    if (data.status == 1) {
+                        data.status = "Aktif";
+                    } else {
+                        data.status = "Tidak Aktif";
+                    }
+                    return '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Detail</button> ' +
+                    '<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal">Edit</button> ' +
+                    '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">Delete</button> ' +
+                    '<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">'+
+                        '<div class="modal-dialog" role="document">'+
+                            '<div class="modal-content">'+
+                                '<div class="modal-header">'+
+                                    '<h5 class="modal-title" id="test2">Detail Employee</h5>'+
+                                    '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'+
+                                        '<span aria-hidden="true">&times;</span>'+
+                                    '</button>'+
+                                '</div>'+
+                                '<div class="modal-body">'+
+                                '<table class="table-responsive">'+
+                                    '<tr><td>Nama Karyawan: </td><td>'+data.nama_karyawan+'</td></tr>'+
+                                    '<tr><td>NIP: </td><td>'+data.nip+'</td></tr>'+
+                                    '<tr><td>Jabatan: </td><td>'+data.jabatan+'</td></tr>'+
+                                    '<tr><td>Departemen: </td><td>'+data.departemen+'</td></tr>'+
+                                    '<tr><td>Tanggal Lahir: </td><td>'+data.tgl_lahir+'</td></tr>'+
+                                    '<tr><td>Tahun Lahir: </td><td>'+data.thn_lahir+'</td></tr>'+
+                                    '<tr><td>Alamat: </td><td>'+data.alamat+'</td></tr>'+
+                                    '<tr><td>No. Telp: </td><td>'+data.no_telp+'</td></tr>'+
+                                    '<tr><td>Agama: </td><td>'+data.agama+'</td></tr>'+
+                                    '<tr><td>Status: </td><td>'+data.status+'</td></tr>'+
+                                    '<tr><td>Foto KTP: </td><td><img src="public/Image/'+data.ktp+'" style="width:250px;height:200px;"></td></tr>'+
+                                '</table>'+
+                                '</div>'+
+                                '<div class="modal-footer">'+
+                                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>'+
+                                    '<button type="button" class="btn btn-primary">Save changes</button>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>';
+                }
+            }
         ]
     })
 </script>

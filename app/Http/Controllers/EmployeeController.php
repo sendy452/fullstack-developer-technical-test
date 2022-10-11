@@ -19,7 +19,8 @@ class EmployeeController extends Controller
         $positions = Position::all();
 
         if(request()->ajax()) {
-            $employees = Employee::all();
+            $employees = Employee::join('positions', 'employees.position_id', '=', 'positions.id')
+            ->get(['employees.*', 'positions.name as jabatan', 'positions.id as id_jabatan']);
             return datatables($employees)
                 ->addIndexColumn()
                 ->toJson();
