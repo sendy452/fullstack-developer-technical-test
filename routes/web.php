@@ -25,4 +25,6 @@ Route::resource('position',PositionController::class);
 //Employee
 Route::resource('employee',EmployeeController::class);
 Route::post('add-employee',[EmployeeController::class, 'store']);
+Route::put('update-employee',[EmployeeController::class, 'update']);
 Route::get('status-employee/{id}',[EmployeeController::class, 'updateStatus'])->name('status.employee');
+Route::get('hapus-employee/{id}',[EmployeeController::class, 'destroy'])->name('hapus.employee');

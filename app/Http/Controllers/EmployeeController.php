@@ -17,6 +17,8 @@ class EmployeeController extends Controller
     public function index()
     {
         $positions = Position::all();
+        $employees = Employee::join('positions', 'employees.position_id', '=', 'positions.id')
+        ->get(['employees.*', 'positions.name as jabatan', 'positions.id as id_jabatan']);
 
         if(request()->ajax()) {
             $employees = Employee::join('positions', 'employees.position_id', '=', 'positions.id')
@@ -25,7 +27,7 @@ class EmployeeController extends Controller
                 ->addIndexColumn()
                 ->toJson();
         }
-        return view('employee',['positions' => $positions]);
+        return view('employee',['positions' => $positions, 'employees' => $employees]);
     }
 
     /**
@@ -118,7 +120,50 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
-        //
+        $employee = Employee::find($request->id);
+
+        $data = $request->all();
+        $validator = Validator::make($data, [
+            'nip' => 'string|unique:employees,nip,'.$request->id.',id',
+            'ktp' => 'image|mimes:jpg,png',
+        ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            if($validator->errors()->has('nip')){
+                toast('NIP telah didaftarkan sebelumnya', 'warning');
+                return redirect('/employee');
+            }
+
+            if($validator->errors()->has('ktp')){
+                toast('Format KTP harus jpg atau png', 'warning');
+                return redirect('/employee');
+            }
+        }
+
+        if ($request->file('ktp') != null) {
+            $file= $request->file('ktp');
+            $filename= date('Ymd').$file->getClientOriginalName();
+            $file->move(public_path('public/Image'), $filename);
+
+            $employee->ktp = $filename;
+        }
+
+        
+        $employee->position_id = $request->jabatan;
+        $employee->nip = $request->nip;
+        $employee->nama_karyawan = $request->nama_karyawan;
+        $employee->departemen = $request->departemen;
+        $employee->tgl_lahir = $request->tgl_lahir;
+        $employee->thn_lahir = $request->thn_lahir;
+        $employee->alamat = $request->alamat;
+        $employee->no_telp = $request->no_telp;
+        $employee->agama = $request->agama;
+
+        $employee->save();
+
+        toast('Status employee berhasil dirubah', 'success');
+        return redirect('/employee');
     }
 
     /**
@@ -150,8 +195,13 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Employee $employee)
+    public function destroy(Request $request)
     {
-        //
+        $employee = Employee::find($request->id);
+
+        $employee->delete();
+
+        toast('Data employee berhasil dihapus', 'success');
+        return redirect('/employee');
     }
 }
