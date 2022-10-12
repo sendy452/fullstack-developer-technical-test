@@ -162,7 +162,7 @@ class EmployeeController extends Controller
 
         $employee->save();
 
-        toast('Status employee berhasil dirubah', 'success');
+        toast('Data employee berhasil dirubah', 'success');
         return redirect('/employee');
     }
 
